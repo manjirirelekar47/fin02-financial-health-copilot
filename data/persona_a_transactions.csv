@@ -1,0 +1,132 @@
+date,merchant,amount,type,account_type
+2026-03-01,ACME CORP SALARY,68000,credit,bank
+2026-03-03,RENT - LANDLORD TRANSFER,18000,debit,bank
+2026-03-04,HDFC HOME LOAN EMI,12000,debit,bank
+2026-03-04,PVR CINEMAS,340.13,debit,credit_card
+2026-03-05,H&M INDIA,591.39,debit,credit_card
+2026-03-09,NETFLIX.COM,200.92,debit,credit_card
+2026-03-09,CULT.FIT MEMBERSHIP,1509.59,debit,credit_card
+2026-03-10,SPOTIFY INDIA,117.68,debit,credit_card
+2026-03-12,ZOMATO,1887.36,debit,credit_card
+2026-03-13,PIPED GAS CORP,862.37,debit,bank
+2026-03-14,MYNTRA,601.9,debit,credit_card
+2026-03-16,AIRTEL BROADBAND,638.14,debit,bank
+2026-03-17,MSEB ELECTRICITY,704.33,debit,bank
+2026-03-18,UBER TRIP,405.89,debit,credit_card
+2026-03-20,MYNTRA,204.4,debit,credit_card
+2026-03-23,BIGBASKET,1482.26,debit,credit_card
+2026-03-23,AMAZON.IN,1016.36,debit,credit_card
+2026-03-26,H&M INDIA,1932.07,debit,credit_card
+2026-03-26,H&M INDIA,239.07,debit,credit_card
+2026-04-01,ACME CORP SALARY,68000,credit,bank
+2026-04-03,RENT - LANDLORD TRANSFER,18000,debit,bank
+2026-04-06,HDFC HOME LOAN EMI,12000,debit,bank
+2026-04-06,PVR CINEMAS,908.87,debit,credit_card
+2026-04-07,PVR CINEMAS,1493.65,debit,credit_card
+2026-04-08,MYNTRA,1553.46,debit,credit_card
+2026-04-08,SWIGGY,1834.7,debit,credit_card
+2026-04-09,NETFLIX.COM,199.41,debit,credit_card
+2026-04-09,CULT.FIT MEMBERSHIP,1471.77,debit,credit_card
+2026-04-10,SPOTIFY INDIA,119.37,debit,credit_card
+2026-04-13,AIRTEL BROADBAND,1626.38,debit,bank
+2026-04-13,UBER TRIP,703.39,debit,credit_card
+2026-04-13,PVR CINEMAS,698.87,debit,credit_card
+2026-04-14,MSEB ELECTRICITY,1527.68,debit,bank
+2026-04-15,H&M INDIA,1453.15,debit,credit_card
+2026-04-19,PIPED GAS CORP,721.2,debit,bank
+2026-04-19,BIGBASKET,1946.55,debit,credit_card
+2026-04-20,ZOMATO,1451.71,debit,credit_card
+2026-04-22,BIGBASKET,697.3,debit,credit_card
+2026-04-24,MYNTRA,651.86,debit,credit_card
+2026-05-01,ACME CORP SALARY,68000,credit,bank
+2026-05-03,RENT - LANDLORD TRANSFER,18000,debit,bank
+2026-05-04,PVR CINEMAS,751.68,debit,credit_card
+2026-05-04,MYNTRA,1934.56,debit,credit_card
+2026-05-05,ZOMATO,1436.26,debit,credit_card
+2026-05-06,HDFC HOME LOAN EMI,13500,debit,bank
+2026-05-09,MYNTRA,2140.71,debit,credit_card
+2026-05-10,SPOTIFY INDIA,117.79,debit,credit_card
+2026-05-10,CULT.FIT MEMBERSHIP,1513.81,debit,credit_card
+2026-05-11,NETFLIX.COM,196.16,debit,credit_card
+2026-05-14,PIPED GAS CORP,1211.43,debit,bank
+2026-05-15,AMAZON.IN,156.65,debit,credit_card
+2026-05-16,MSEB ELECTRICITY,1677.39,debit,bank
+2026-05-16,AIRTEL BROADBAND,1034.4,debit,bank
+2026-05-17,H&M INDIA,1712.02,debit,credit_card
+2026-05-20,STARBUCKS,280.23,debit,credit_card
+2026-05-20,STARBUCKS,2192.05,debit,credit_card
+2026-05-22,SWIGGY,1627.48,debit,credit_card
+2026-05-25,ZOMATO,246.59,debit,credit_card
+2026-05-25,MYNTRA,696.99,debit,credit_card
+2026-05-25,APOLLO PHARMACY,4193.47,debit,credit_card
+2026-05-27,H&M INDIA,1459.85,debit,credit_card
+2026-06-01,ACME CORP SALARY,68000,credit,bank
+2026-06-03,RENT - LANDLORD TRANSFER,18000,debit,bank
+2026-06-03,ZOMATO,1650.41,debit,credit_card
+2026-06-03,SWIGGY,1601.07,debit,credit_card
+2026-06-04,UBER TRIP,658.21,debit,credit_card
+2026-06-05,HDFC HOME LOAN EMI,13500,debit,bank
+2026-06-05,AMAZON.IN,1502.49,debit,credit_card
+2026-06-06,MYNTRA,693.37,debit,credit_card
+2026-06-07,STARBUCKS,2054.27,debit,credit_card
+2026-06-08,MYNTRA,1356.3,debit,credit_card
+2026-06-08,SWIGGY,288.17,debit,credit_card
+2026-06-09,SPOTIFY INDIA,119.47,debit,credit_card
+2026-06-10,NETFLIX.COM,199.31,debit,credit_card
+2026-06-11,CULT.FIT MEMBERSHIP,1470.19,debit,credit_card
+2026-06-11,ZOMATO,193.12,debit,credit_card
+2026-06-14,PIPED GAS CORP,669.51,debit,bank
+2026-06-15,MSEB ELECTRICITY,1654.47,debit,bank
+2026-06-15,PVR CINEMAS,1994.21,debit,credit_card
+2026-06-19,AIRTEL BROADBAND,1568.13,debit,bank
+2026-06-23,BIGBASKET,789.02,debit,credit_card
+2026-06-25,ZOMATO,1242.05,debit,credit_card
+2026-06-28,SWIGGY,827.38,debit,credit_card
+2026-07-01,ACME CORP SALARY,68000,credit,bank
+2026-07-02,ZOMATO,975.37,debit,credit_card
+2026-07-03,RENT - LANDLORD TRANSFER,18000,debit,bank
+2026-07-04,MYNTRA,253.71,debit,credit_card
+2026-07-05,HDFC HOME LOAN EMI,15000,debit,bank
+2026-07-05,UBER TRIP,1014.86,debit,credit_card
+2026-07-06,SWIGGY,926.89,debit,credit_card
+2026-07-07,BIGBASKET,539.93,debit,credit_card
+2026-07-10,NETFLIX.COM,200.35,debit,credit_card
+2026-07-10,SPOTIFY INDIA,119.19,debit,credit_card
+2026-07-11,CULT.FIT MEMBERSHIP,1483.59,debit,credit_card
+2026-07-14,AIRTEL BROADBAND,713.19,debit,bank
+2026-07-14,STARBUCKS,1107.4,debit,credit_card
+2026-07-14,AMAZON.IN,1145.56,debit,credit_card
+2026-07-15,H&M INDIA,662.1,debit,credit_card
+2026-07-15,ZOMATO,1806.45,debit,credit_card
+2026-07-16,MSEB ELECTRICITY,1569.0,debit,bank
+2026-07-18,PIPED GAS CORP,1117.26,debit,bank
+2026-07-22,SWIGGY,1489.58,debit,credit_card
+2026-07-22,MAKEMYTRIP,4591.22,debit,credit_card
+2026-07-25,ZOMATO,1889.83,debit,credit_card
+2026-07-26,PVR CINEMAS,1916.43,debit,credit_card
+2026-07-27,MYNTRA,180.25,debit,credit_card
+2026-07-28,BIGBASKET,972.13,debit,credit_card
+2026-08-01,ACME CORP SALARY,68000,credit,bank
+2026-08-01,ZOMATO,1089.49,debit,credit_card
+2026-08-03,RENT - LANDLORD TRANSFER,18000,debit,bank
+2026-08-03,MYNTRA,1895.25,debit,credit_card
+2026-08-03,ZOMATO,1252.15,debit,credit_card
+2026-08-03,PVR CINEMAS,1952.5,debit,credit_card
+2026-08-06,HDFC HOME LOAN EMI,16500,debit,bank
+2026-08-06,MYNTRA,266.6,debit,credit_card
+2026-08-09,BIGBASKET,961.36,debit,credit_card
+2026-08-09,MYNTRA,421.54,debit,credit_card
+2026-08-10,NETFLIX.COM,198.39,debit,credit_card
+2026-08-10,CULT.FIT MEMBERSHIP,1482.07,debit,credit_card
+2026-08-11,SPOTIFY INDIA,117.36,debit,credit_card
+2026-08-11,MYNTRA,2066.15,debit,credit_card
+2026-08-13,MSEB ELECTRICITY,1295.02,debit,bank
+2026-08-13,BIGBASKET,395.77,debit,credit_card
+2026-08-14,ZOMATO,1497.61,debit,credit_card
+2026-08-15,PIPED GAS CORP,668.6,debit,bank
+2026-08-15,H&M INDIA,798.16,debit,credit_card
+2026-08-17,AIRTEL BROADBAND,673.15,debit,bank
+2026-08-17,UBER TRIP,2034.74,debit,credit_card
+2026-08-19,BIGBASKET,1368.76,debit,credit_card
+2026-08-20,ZOMATO,289.32,debit,credit_card
+2026-08-22,BIGBASKET,1618.19,debit,credit_card
