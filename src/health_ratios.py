@@ -112,6 +112,23 @@ def compute_overall_health_ratios(df: pd.DataFrame) -> dict:
         "needs_review": needs_review,
     }
 
+def monthly_summary(df):
+    """Alias expected by api/main.py."""
+    return compute_monthly_health_ratios(df)
+
+
+def trend_flags(summary):
+    """Rule-based trend flags over an already-computed monthly summary."""
+    valid = summary.dropna(subset=["savings_rate", "debt_to_income_ratio"])
+    if len(valid) < 2:
+        return {"savings_rate_declining": False, "debt_to_income_rising": False, "needs_review": True}
+    first, last = valid.iloc[0], valid.iloc[-1]
+    return {
+        "savings_rate_declining": bool(last["savings_rate"] < first["savings_rate"]),
+        "debt_to_income_rising": bool(last["debt_to_income_ratio"] > first["debt_to_income_ratio"]),
+        "needs_review": bool(valid["needs_review"].any()),
+    }
+
 
 if __name__ == "__main__":
     from ingestion import load_transactions
