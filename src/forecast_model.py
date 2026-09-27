@@ -57,8 +57,44 @@ def backtest(daily_df, holdout_days=30):
         "confidence_band_coverage_pct": round(within_band * 100, 1)
     }
 
+def forecast_forward(daily_df, forecast_days=30):
+    """
+    Forecasts forward from the LAST available date in the data (not a
+    holdout cutoff) — this is what actually feeds the dashboard's
+    "Predicted" line, as distinct from backtest() which evaluates accuracy
+    against already-known history.
+
+    Returns a DataFrame: date, predicted_net_cashflow, confidence_low,
+    confidence_high — confidence band uses the same +/- 1 std-dev approach
+    as backtest(), so the reported coverage % from backtest() is a fair
+    estimate of how reliable this band actually is.
+    """
+    end_date = daily_df["date"].max()
+    window = trailing_90_days(daily_df, end_date)
+
+    if is_volatile(window):
+        preds = moving_average_fallback(window, forecast_days=forecast_days)
+    else:
+        preds, _ = fit_linear_forecast(window, forecast_days=forecast_days)
+
+    std_dev = window["net_cashflow"].std()
+    future_dates = pd.date_range(end_date + pd.Timedelta(days=1), periods=forecast_days)
+
+    return pd.DataFrame({
+        "date": future_dates,
+        "predicted_net_cashflow": preds,
+        "confidence_low": preds - std_dev,
+        "confidence_high": preds + std_dev,
+    })
+
+
 if __name__ == "__main__":
-    df = load_transactions("data/persona_a_transactions.csv")
+    df = load_transactions("../data/persona_a_transactions.csv")
     daily = compute_daily_net_cashflow(df)
+
     results = backtest(daily, holdout_days=30)
-    print(results)
+    print("Back-test:", results)
+
+    forward = forecast_forward(daily, forecast_days=30)
+    print("\nForward forecast (first 5 days):")
+    print(forward.head())
