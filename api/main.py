@@ -2,18 +2,6 @@
 api/main.py — FastAPI bridge between the Python pipeline and the React frontend.
 
 Owned by: Member 1
-
-Every endpoint runs the existing pipeline (ingestion -> categoriser ->
-recurring_detector / health_ratios) and returns plain JSON. No new business
-logic lives here — this file only translates pandas output into a shape
-`fetch()` in the browser can consume. If a calculation is wrong, fix it in
-src/, not here.
-
-Run with:
-    uvicorn api.main:app --reload --port 8000
-
-Then open http://localhost:8000/docs for interactive API docs (auto-generated
-by FastAPI — genuinely useful to show a judge, and free).
 """
 
 import os
@@ -32,11 +20,16 @@ from forecast_model import compute_daily_net_cashflow, forecast_forward, backtes
 
 app = FastAPI(title="FIN-02 Financial Health Copilot API")
 
-# Wide-open CORS is fine for a hackathon prototype (localhost frontend calling
-# localhost backend) — would need tightening for anything beyond the demo.
+# Enable CORS for local testing and production Vercel frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://fin02-financial-health-copilot.vercel.app",
+        "*",
+    ],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -45,8 +38,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "persona_a_tra
 
 
 def _run_pipeline():
-    """Runs ingestion + categorisation once per request. Fine at prototype
-    scale (a few hundred rows); cache this if it becomes a bottleneck later."""
+    """Runs ingestion + categorisation once per request."""
     try:
         clean = load_transactions(DATA_PATH)
     except TransactionValidationError as exc:
@@ -54,10 +46,15 @@ def _run_pipeline():
     return categorise_dataframe(clean)
 
 
+@app.get("/")
+def root():
+    """Root endpoint to quickly verify the Render deployment is alive."""
+    return {"status": "ok", "message": "FIN-02 Financial Health Copilot API is running"}
+
+
 @app.get("/api/health")
 def health_check():
-    """Simple liveness check — useful to confirm the server is up before
-    debugging anything else."""
+    """Simple liveness check."""
     return {"status": "ok"}
 
 
@@ -73,7 +70,7 @@ def get_summary():
 
 @app.get("/api/trends")
 def get_trends():
-    """Rule-based trend flags (e.g. savings_rate_declining) over the summary."""
+    """Rule-based trend flags over the summary."""
     df = _run_pipeline()
     summary = monthly_summary(df)
     return trend_flags(summary)
@@ -92,16 +89,7 @@ def get_recurring():
 
 @app.get("/api/forecast")
 def get_forecast(forecast_days: int = 30, holdout_days: int = 30):
-    """
-    Forward cash-flow forecast plus back-test accuracy.
-
-    Returns:
-        forecast: list of {date, predicted_net_cashflow, confidence_low, confidence_high}
-        backtest: {mae_per_day, confidence_band_coverage_pct} — computed by
-                  holding out the last `holdout_days` of REAL data and
-                  checking the forecast against it. Report this number
-                  in the pitch/README, not a guess.
-    """
+    """Forward cash-flow forecast plus back-test accuracy."""
     df = _run_pipeline()
     daily = compute_daily_net_cashflow(df)
 
@@ -119,7 +107,7 @@ def get_forecast(forecast_days: int = 30, holdout_days: int = 30):
 
 @app.get("/api/transactions")
 def get_transactions(limit: int = 50):
-    """Raw categorised transactions — mainly for debugging / a table view."""
+    """Raw categorised transactions."""
     df = _run_pipeline()
     out = df.copy()
     out["date"] = out["date"].dt.strftime("%Y-%m-%d")
