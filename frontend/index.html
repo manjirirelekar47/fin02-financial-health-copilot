@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpendShield — Financial Health Copilot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind via CDN, with the SpendShield design tokens extended inline.
+         No build step needed for a hackathon prototype; the color values
+         below are pulled directly from where they were already hardcoded
+         in component code (HealthMetrics.jsx's score-donut colors,
+         ForecastChart.jsx's line colors) so the two stay in sync. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Inter", "sans-serif"],
+            },
+            colors: {
+              canvas: "#F8FAFC",
+              navy: "#132B4A",
+              cardborder: "#E7EDF4",
+              accent: "#2563EB",
+              healthy: "#16A34A",
+              attention: "#D97706",
+              risk: "#DC2626",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* One deliberate motion moment: content fades/slides in on tab switch.
+         Re-triggered by React's key={activeTab} in App.jsx. */
+      @keyframes tabIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .tab-enter { animation: tabIn 0.22s ease-out; }
+      @media (prefers-reduced-motion: reduce) {
+        .tab-enter { animation: none; }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
