@@ -118,14 +118,30 @@ def monthly_summary(df):
 
 
 def trend_flags(summary):
-    """Rule-based trend flags over an already-computed monthly summary."""
+    """Rule-based trend flags over an already-computed monthly summary.
+
+    Alongside the two booleans, also reports the actual change in each
+    ratio (last month minus first month, as a fraction — e.g. -0.21 means
+    a 21 percentage-point drop) so callers like the frontend's Attention
+    Panel can state the real magnitude instead of just the direction.
+    """
     valid = summary.dropna(subset=["savings_rate", "debt_to_income_ratio"])
     if len(valid) < 2:
-        return {"savings_rate_declining": False, "debt_to_income_rising": False, "needs_review": True}
+        return {
+            "savings_rate_declining": False,
+            "debt_to_income_rising": False,
+            "savings_rate_change_total": 0.0,
+            "debt_to_income_change_total": 0.0,
+            "needs_review": True,
+        }
     first, last = valid.iloc[0], valid.iloc[-1]
+    savings_rate_change_total = round(float(last["savings_rate"] - first["savings_rate"]), 4)
+    debt_to_income_change_total = round(float(last["debt_to_income_ratio"] - first["debt_to_income_ratio"]), 4)
     return {
         "savings_rate_declining": bool(last["savings_rate"] < first["savings_rate"]),
         "debt_to_income_rising": bool(last["debt_to_income_ratio"] > first["debt_to_income_ratio"]),
+        "savings_rate_change_total": savings_rate_change_total,
+        "debt_to_income_change_total": debt_to_income_change_total,
         "needs_review": bool(valid["needs_review"].any()),
     }
 
