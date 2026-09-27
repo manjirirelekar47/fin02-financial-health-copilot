@@ -1,7 +1,7 @@
 // src/api.js — owned by Member 1, matches api/main.py exactly.
 // Every function returns a Promise resolving to already-parsed JSON.
 
-const BASE_URL = "http://localhost:8000/api";
+const BASE_URL = "https://spendshield-tj9v.onrender.com";
 
 async function getJSON(path) {
   const res = await fetch(`${BASE_URL}${path}`);
