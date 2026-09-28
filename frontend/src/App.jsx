@@ -39,6 +39,7 @@ function App() {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [slow, setSlow] = useState(false);
 
   useEffect(() => {
     Promise.all([getSummary(), getTrends(), getRecurring(), getForecast(), getTransactions(100)])
@@ -53,18 +54,35 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  // If the API takes a while (e.g. a cold-started server), say so instead of
+  // leaving the user staring at a blank screen.
+  useEffect(() => {
+    const t = setTimeout(() => setSlow(true), 4000);
+    return () => clearTimeout(t);
+  }, []);
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-canvas text-slate-500">
-        Loading dashboard...
+      <div className="min-h-screen flex flex-col items-center justify-center app-bg px-6 text-center">
+        <img src="/logo-icon.png" alt="SpendShield" className="w-20 h-20 animate-pulse" />
+        <p className="mt-5 text-navy font-semibold">Loading your financial picture…</p>
+        {slow && (
+          <p className="mt-2 text-sm text-slate-500 max-w-xs">
+            The server is waking up — the first load can take a little longer.
+          </p>
+        )}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-canvas text-red-600">
-        Failed to load data: {error}. Is the API running on port 8000?
+      <div className="min-h-screen flex flex-col items-center justify-center app-bg px-6 text-center">
+        <img src="/logo-icon.png" alt="SpendShield" className="w-16 h-16 opacity-80" />
+        <p className="mt-5 text-navy font-semibold">Couldn't reach the SpendShield API.</p>
+        <p className="mt-2 text-sm text-slate-500 max-w-md">
+          Please refresh in a few seconds. Details: {error}. (Running locally? Check that the API is up on port 8000.)
+        </p>
       </div>
     );
   }
@@ -74,19 +92,32 @@ function App() {
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
   return (
-    <div className="min-h-screen bg-canvas flex">
+    <div className="min-h-screen app-bg flex">
       <Sidebar tabs={TABS} activeTab={activeTab} onSelect={setActiveTab} />
 
       <main className="flex-1 overflow-y-auto">
         <div className="p-8 max-w-6xl mx-auto">
-          <header className="mb-6">
-            <h1 className="text-3xl font-display font-extrabold text-navy tracking-tight">
-              {TABS.find((t) => t.id === activeTab)?.label}
-            </h1>
-            <p className="text-slate-500 mt-1">
-              {greeting} 👋 Here's how Persona A is doing —{" "}
-              {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
-            </p>
+          <header className="mb-6 relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0E2E28] via-[#14503F] to-[#1D7A5F] text-white p-7 shadow-xl shadow-emerald-900/20">
+            <img
+              src="/logo-icon.png"
+              alt=""
+              aria-hidden="true"
+              className="absolute -right-8 -top-8 w-64 h-64 object-contain brightness-0 invert opacity-10 select-none pointer-events-none"
+            />
+            <div className="absolute -left-12 -bottom-20 w-72 h-72 rounded-full bg-emerald-400/20 blur-3xl pointer-events-none" />
+            <div className="relative">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 ring-1 ring-white/20 px-3 py-1 text-xs font-medium text-emerald-100">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
+                Persona A · synthetic data calibrated to RBI statistics
+              </span>
+              <h1 className="mt-3 text-3xl font-display font-extrabold tracking-tight">
+                {TABS.find((t) => t.id === activeTab)?.label}
+              </h1>
+              <p className="mt-1.5 text-emerald-100/90">
+                {greeting} 👋 Here's how Persona A is doing —{" "}
+                {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
+              </p>
+            </div>
           </header>
 
           {/* key={activeTab} re-triggers the .tab-enter animation on every switch */}
