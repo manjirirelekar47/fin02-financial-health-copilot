@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0E2E28" />
     <title>SpendShield — Financial Health Copilot</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,10 +14,10 @@
       rel="stylesheet"
     />
     <!-- Tailwind via CDN, with the SpendShield design tokens extended inline.
-         No build step needed for a hackathon prototype; the color values
-         below are pulled directly from where they were already hardcoded
-         in component code (HealthMetrics.jsx's score-donut colors,
-         ForecastChart.jsx's line colors) so the two stay in sync. -->
+         THEME NOTE: the token NAMES below (navy, accent, canvas, cardborder)
+         are unchanged so every existing component keeps working untouched —
+         only their VALUES moved from blue to the logo's green palette.
+         "navy" now holds the logo's deep green; it is the brand dark colour. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -25,10 +28,10 @@
               display: ["Inter", "sans-serif"],
             },
             colors: {
-              canvas: "#F8FAFC",
-              navy: "#132B4A",
-              cardborder: "#E7EDF4",
-              accent: "#2563EB",
+              canvas: "#EEF7F2",
+              navy: "#0E2E28",
+              cardborder: "#D5E8DD",
+              accent: "#0D9488",
               healthy: "#16A34A",
               attention: "#D97706",
               risk: "#DC2626",
@@ -38,19 +41,57 @@
       };
     </script>
     <style>
-      /* One deliberate motion moment: content fades/slides in on tab switch.
-         Re-triggered by React's key={activeTab} in App.jsx. */
+      /* Page background: soft green gradient with two light "glow" blobs.
+         Fixed so the glass cards blur over the same backdrop while scrolling. */
+      .app-bg {
+        background:
+          radial-gradient(1100px 560px at 88% -8%, rgba(52, 211, 153, 0.24), transparent 60%),
+          radial-gradient(900px 520px at -8% 108%, rgba(16, 185, 129, 0.18), transparent 58%),
+          linear-gradient(135deg, #f3faf6 0%, #e8f5ee 52%, #dcf0e5 100%);
+        background-attachment: fixed;
+      }
+
+      /* Glassmorphism for every card in the main content area. Components
+         use plain `bg-white` cards; this restyles them in one place instead
+         of editing each teammate's file. */
+      main .bg-white {
+        background-color: rgba(255, 255, 255, 0.72);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        border-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 8px 28px -12px rgba(14, 46, 40, 0.18);
+      }
+
+      /* Motion: content cascades in on load and on every tab switch (React's
+         key={activeTab} in App.jsx re-triggers it). Each direct child of
+         .tab-enter fades/slides in slightly after the previous one. */
       @keyframes tabIn {
-        from { opacity: 0; transform: translateY(6px); }
+        from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
       }
-      .tab-enter { animation: tabIn 0.22s ease-out; }
+      .tab-enter > * { animation: tabIn 0.45s ease-out both; }
+      .tab-enter > *:nth-child(2) { animation-delay: 0.07s; }
+      .tab-enter > *:nth-child(3) { animation-delay: 0.14s; }
+      .tab-enter > *:nth-child(4) { animation-delay: 0.21s; }
+      .tab-enter > *:nth-child(5) { animation-delay: 0.28s; }
       @media (prefers-reduced-motion: reduce) {
-        .tab-enter { animation: none; }
+        .tab-enter > * { animation: none; }
       }
+
+      /* Table headers: soft green tint instead of flat grey. */
+      main thead.bg-canvas {
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.12), rgba(13, 148, 136, 0.06));
+      }
+
+      /* Small polish: brand-coloured text selection + slim green scrollbar. */
+      ::selection { background: rgba(16, 185, 129, 0.28); }
+      * { scrollbar-width: thin; scrollbar-color: rgba(29, 96, 76, 0.35) transparent; }
+      *::-webkit-scrollbar { width: 8px; height: 8px; }
+      *::-webkit-scrollbar-thumb { background: rgba(29, 96, 76, 0.35); border-radius: 999px; }
+      *::-webkit-scrollbar-track { background: transparent; }
     </style>
   </head>
-  <body class="bg-slate-50">
+  <body class="bg-canvas">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
