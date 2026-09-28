@@ -94,7 +94,7 @@ function ForecastChart({ summary, forecast }) {
 
       <ResponsiveContainer width="100%" height={320}>
         <ComposedChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#D5E8DD" />
           <XAxis dataKey="label" tick={{ fontSize: 12 }} />
           <YAxis tick={{ fontSize: 12 }} />
           <Tooltip formatter={(value) => (value === undefined ? "—" : formatCurrency(value))} />
@@ -104,8 +104,8 @@ function ForecastChart({ summary, forecast }) {
             type="monotone"
             dataKey="confidence_high"
             stroke="none"
-            fill="#93c5fd"
-            fillOpacity={0.3}
+            fill="#34D399"
+            fillOpacity={0.28}
             name="Confidence band"
           />
           <Area
@@ -121,7 +121,7 @@ function ForecastChart({ summary, forecast }) {
           <Line
             type="monotone"
             dataKey="observed"
-            stroke="#1e293b"
+            stroke="#0E2E28"
             strokeWidth={2}
             dot={{ r: 3 }}
             name="Observed"
@@ -130,7 +130,7 @@ function ForecastChart({ summary, forecast }) {
           <Line
             type="monotone"
             dataKey="predicted"
-            stroke="#2563eb"
+            stroke="#0D9488"
             strokeWidth={2}
             strokeDasharray="6 4"
             dot={{ r: 4 }}
