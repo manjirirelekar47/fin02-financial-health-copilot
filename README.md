@@ -63,6 +63,21 @@ honest "coming in the 24-hour build" placeholders instead of dead links:
 - **Frontend:** https://fin02-financial-health-copilot.vercel.app
 - **Backend API:** https://spendshield-tj9v.onrender.com
 
+## 📸 Screenshots
+
+### Dashboard
+<img width="1600" height="906" alt="image" src="https://github.com/user-attachments/assets/b2d5618d-d83a-4ee6-ad78-d4f19e2a1376" />
+
+### Cash-Flow Forecast
+<img width="1600" height="908" alt="image" src="https://github.com/user-attachments/assets/c6ac5bf6-a8ac-4211-86e5-8de078c8b51a" />
+
+### Transactions
+<img width="1600" height="908" alt="image" src="https://github.com/user-attachments/assets/deae59aa-5b41-4b07-8913-f15e9cfb4d57" />
+
+### Recurring Payments
+<img width="1600" height="903" alt="image" src="https://github.com/user-attachments/assets/84ba9610-f8ec-4b93-ad0d-677fdceadd5c" />
+
+ 
 ## 👥 Team
 
 | Member | Role |
@@ -146,6 +161,10 @@ cd frontend
 npm install
 npm run dev
 ```
+## 📋 Requirements
 
+- Python 3.10+ (developed and tested on 3.13)
+- Node.js 18+ and npm (developed and tested on Node 24)
+- Git
 Both must run simultaneously — the frontend calls the backend at the URL
 configured in `frontend/src/api.js`.
