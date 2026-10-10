@@ -10,6 +10,7 @@
 //       total_drift_pct, avg_interval_days, last_seen, ... }
 
 function formatCurrency(value) {
+  if (value === null || value === undefined || isNaN(value)) return "—";
   return `₹${Number(value).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
 }
 
@@ -24,20 +25,20 @@ const TYPE_BADGE_STYLES = {
 function TypeBadge({ type }) {
   const classes = TYPE_BADGE_STYLES[type] || TYPE_BADGE_STYLES["Other recurring"];
   return (
-    <span className={`px-2 py-1 rounded-full text-xs font-medium ${classes}`}>{type}</span>
+    <span className={`px-2 py-1 rounded-full text-xs font-medium ${classes}`}>{type || "Recurring"}</span>
   );
 }
 
 function DriftBadge({ pct }) {
-  if (pct === 0) {
+  if (pct === null || pct === undefined || isNaN(pct) || pct === 0) {
     return <span className="text-slate-400 text-sm">No change</span>;
   }
-  const isIncrease = pct > 0;
+  const isIncrease = Number(pct) > 0;
   const tone = isIncrease ? "text-risk" : "text-healthy";
   return (
     <span className={`text-sm font-medium ${tone}`}>
       {isIncrease ? "▲" : "▼"} {isIncrease ? "+" : ""}
-      {pct}%
+      {typeof pct === "number" ? pct.toFixed(1) : pct}%
     </span>
   );
 }
@@ -65,20 +66,29 @@ function RecurringTable({ payments }) {
           </tr>
         </thead>
         <tbody>
-          {payments.map((p) => (
-            <tr key={p.merchant} className="border-t border-cardborder hover:bg-canvas/60 transition-colors">
-              <td className="px-4 py-3 font-medium text-navy">{p.merchant}</td>
-              <td className="px-4 py-3">
-                <TypeBadge type={p.recurring_type} />
-              </td>
-              <td className="px-4 py-3 text-slate-500">{p.occurrences}</td>
-              <td className="px-4 py-3 text-slate-700 font-medium">{formatCurrency(p.last_amount)}</td>
-              <td className="px-4 py-3">
-                <DriftBadge pct={p.total_drift_pct} />
-              </td>
-              <td className="px-4 py-3 text-slate-400">{p.last_seen}</td>
-            </tr>
-          ))}
+          {payments.map((p, idx) => {
+            const merchant = p.merchant || p.narration || p.id || "Recurring Item";
+            const type = p.recurring_type || p.category || "Subscription";
+            const occurrences = p.occurrences ?? "—";
+            const lastAmount = p.last_amount ?? p.amount ?? p.avg_amount ?? 0;
+            const drift = p.total_drift_pct ?? 0;
+            const lastSeen = p.last_seen || "Recent";
+
+            return (
+              <tr key={`${merchant}-${idx}`} className="border-t border-cardborder hover:bg-canvas/60 transition-colors">
+                <td className="px-4 py-3 font-medium text-navy">{merchant}</td>
+                <td className="px-4 py-3">
+                  <TypeBadge type={type} />
+                </td>
+                <td className="px-4 py-3 text-slate-500">{occurrences}</td>
+                <td className="px-4 py-3 text-slate-700 font-medium">{formatCurrency(lastAmount)}</td>
+                <td className="px-4 py-3">
+                  <DriftBadge pct={drift} />
+                </td>
+                <td className="px-4 py-3 text-slate-400">{lastSeen}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

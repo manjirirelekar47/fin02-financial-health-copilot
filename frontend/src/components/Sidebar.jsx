@@ -11,7 +11,7 @@
 //   activeTab - id of the currently selected tab
 //   onSelect  - (id) => void
 
-function Sidebar({ tabs, activeTab, onSelect }) {
+function Sidebar({ tabs, activeTab, onSelect, onSwitchMode }) {
   return (
     <aside className="w-64 bg-white/70 backdrop-blur-xl border-r border-cardborder flex flex-col h-screen shrink-0 sticky top-0">
       <div className="px-5 py-6 flex items-center gap-3">
@@ -54,7 +54,15 @@ function Sidebar({ tabs, activeTab, onSelect }) {
       <div className="px-6 py-5 border-t border-cardborder">
         <p className="text-xs font-semibold text-navy/80">Simulate the consequences.</p>
         <p className="text-xs font-semibold text-accent">Then decide.</p>
-        <p className="text-[11px] text-slate-400 leading-relaxed mt-2">Persona A · 40% Prototype</p>
+        {onSwitchMode && (
+          <button
+            type="button"
+            onClick={onSwitchMode}
+            className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-emerald-600/20 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-900 px-2.5 py-1.5 text-xs font-semibold transition-all"
+          >
+            ⚡ Switch Data / Demo
+          </button>
+        )}
       </div>
     </aside>
   );
