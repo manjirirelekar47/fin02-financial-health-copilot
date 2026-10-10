@@ -147,3 +147,40 @@ if __name__ == "__main__":
 
     print(recurring.to_string(index=False))
     print(f"\nTotal current monthly recurring burden: Rs. {monthly_recurring_burden(recurring):,.2f}")
+
+def check_rollover_warning(df: pd.DataFrame, recurring_df: pd.DataFrame, window_days: int = 5) -> bool:
+    """
+    Checks if there's a pattern of borrowing to repay borrowing.
+    Specifically: a loan credit arriving shortly (within `window_days`)
+    before an EMI or credit card payment.
+    """
+    if recurring_df.empty:
+        return False
+        
+    # Find all EMI or loan repayments in recurring_df
+    emi_merchants = recurring_df[recurring_df["recurring_type"] == "EMI"]["merchant"].tolist()
+    
+    # Identify loan credits (heuristics for loan disbursal)
+    credits = df[df["type"] == "credit"]
+    loan_credits = credits[credits["merchant"].str.contains("LOAN|DISBURSAL|CREDITLINE", case=False, na=False)]
+    
+    if loan_credits.empty or not emi_merchants:
+        return False
+        
+    # Check if any loan credit arrives within `window_days` before an EMI payment
+    debits = df[df["type"] == "debit"]
+    emi_debits = debits[debits["merchant"].isin(emi_merchants)]
+    
+    for _, credit_row in loan_credits.iterrows():
+        credit_date = pd.to_datetime(credit_row["date"])
+        
+        # Look for EMI debits shortly after this credit
+        subsequent_emis = emi_debits[
+            (pd.to_datetime(emi_debits["date"]) > credit_date) & 
+            (pd.to_datetime(emi_debits["date"]) <= credit_date + pd.Timedelta(days=window_days))
+        ]
+        
+        if not subsequent_emis.empty:
+            return True
+            
+    return False

@@ -1,0 +1,66 @@
+[
+  {
+    "metric": "Out-of-pocket (OOP) health spending",
+    "value": 39.4,
+    "unit": "percentage",
+    "year": "2021-22",
+    "report_name": "National Health Accounts",
+    "source_url": "https://pib.gov.in/PressReleasePage.aspx?PRID=2058564"
+  },
+  {
+    "metric": "Target OOP health spending",
+    "value": 35.0,
+    "unit": "percentage",
+    "year": "2021-22",
+    "report_name": "National Health Accounts",
+    "source_url": "https://pib.gov.in/PressReleasePage.aspx?PRID=2058564"
+  },
+  {
+    "metric": "Total health expenditure",
+    "value": 3.83,
+    "unit": "percentage_gdp",
+    "year": "2021-22",
+    "report_name": "National Health Accounts",
+    "source_url": "https://pib.gov.in/PressReleasePage.aspx?PRID=2058564"
+  },
+  {
+    "metric": "Government share of health expenditure",
+    "value": 48.0,
+    "unit": "percentage",
+    "year": "2021-22",
+    "report_name": "National Health Accounts",
+    "source_url": "https://pib.gov.in/PressReleasePage.aspx?PRID=2058564"
+  },
+  {
+    "metric": "Household debt",
+    "value": 45.5,
+    "unit": "percentage_gdp",
+    "year": "2023",
+    "report_name": "RBI Financial Stability Report",
+    "source_url": "https://rbi.org.in/Scripts/AnnualReportPublications.aspx"
+  },
+  {
+    "metric": "Non-housing retail loans share",
+    "value": 58.4,
+    "unit": "percentage",
+    "year": "2023",
+    "report_name": "RBI Financial Stability Report",
+    "source_url": "https://rbi.org.in/Scripts/AnnualReportPublications.aspx"
+  },
+  {
+    "metric": "Debt service ratio",
+    "value": 12.0,
+    "unit": "percentage_income",
+    "year": "2023",
+    "report_name": "RBI Financial Stability Report",
+    "source_url": "https://rbi.org.in/Scripts/AnnualReportPublications.aspx"
+  },
+  {
+    "metric": "Savings buffer (Months of expenses)",
+    "value": 3.0,
+    "unit": "months",
+    "year": "2023",
+    "report_name": "RBI Financial Stability Report",
+    "source_url": "https://rbi.org.in/Scripts/AnnualReportPublications.aspx"
+  }
+]
