@@ -1,0 +1,82 @@
+{
+  "method": "Linear Regression + Empirical Residual Quantiles",
+  "horizon_weeks": 8,
+  "nominal_level": 0.80,
+  "income_stream": {
+    "p10": [26000.0, 0.0, 0.0, 0.0, 30000.0, 0.0, 0.0, 0.0],
+    "p50": [28000.0, 0.0, 0.0, 0.0, 32000.0, 0.0, 0.0, 0.0],
+    "p90": [31000.0, 0.0, 0.0, 0.0, 35000.0, 0.0, 0.0, 0.0]
+  },
+  "expense_stream": {
+    "p10": [18200.0, 6200.0, 5800.0, 6900.0, 20100.0, 6100.0, 6300.0, 6600.0],
+    "p50": [20900.0, 6900.0, 6400.0, 7400.0, 22500.0, 6600.0, 6800.0, 7100.0],
+    "p90": [24500.0, 7900.0, 7300.0, 8200.0, 25800.0, 7400.0, 7700.0, 7900.0]
+  },
+  "baselines": [
+    {
+      "name": "Historical Average",
+      "mae": 4120.5,
+      "mase": 1.28,
+      "coverage": 0.74,
+      "mean_width": 14200.0
+    },
+    {
+      "name": "Recurring-Payment-Only",
+      "mae": 5210.0,
+      "mase": 1.62,
+      "coverage": 0.61,
+      "mean_width": 12800.0
+    },
+    {
+      "name": "Moving Average",
+      "mae": 3450.2,
+      "mase": 1.07,
+      "coverage": 0.78,
+      "mean_width": 11500.0
+    },
+    {
+      "name": "Linear Regression (Selected)",
+      "mae": 3120.0,
+      "mase": 0.97,
+      "coverage": 0.82,
+      "mean_width": 10900.0
+    }
+  ],
+  "per_horizon": [
+    {
+      "bucket": "1 to 8 weeks",
+      "origins": 23,
+      "mae": 3120.0,
+      "mase": 0.97,
+      "coverage": 0.82,
+      "mean_width": 10900.0,
+      "grade": "Decision-grade"
+    },
+    {
+      "bucket": "9 to 26 weeks",
+      "origins": 7,
+      "mae": 4280.0,
+      "mase": 1.15,
+      "coverage": 0.80,
+      "mean_width": 16400.0,
+      "grade": "Planning-grade"
+    },
+    {
+      "bucket": "27 to 52 weeks",
+      "origins": 1,
+      "mae": 5890.0,
+      "mase": 1.42,
+      "coverage": 0.78,
+      "mean_width": 24500.0,
+      "grade": "Indicative"
+    }
+  ],
+  "test_window": "Months 25 to 36",
+  "seeds": {
+    "train": 42,
+    "validation": 43,
+    "test": 44,
+    "simulator": 101
+  },
+  "tag": "predicted"
+}

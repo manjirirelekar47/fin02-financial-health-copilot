@@ -1,0 +1,25 @@
+{
+  "status": "ok",
+  "ratios": {"dti": 0.34, "savings_rate": 0.18, "buffer_months": 2.4, "runway_days": 74.0},
+  "recurring": [
+    {
+      "merchant": "Adobe Creative Cloud",
+      "recurring_type": "Subscription",
+      "occurrences": 6,
+      "avg_amount": 4250.0,
+      "amount_std": 120.0,
+      "avg_interval_days": 30.0,
+      "first_seen": "2026-04-01",
+      "last_seen": "2026-09-01",
+      "first_amount": 3500.0,
+      "last_amount": 4500.0,
+      "total_drift_pct": 28.5,
+      "evidence": ["t_201", "t_340"],
+      "tag": "observed"
+    }
+  ],
+  "alerts": [{"id": "a_01", "mode": "silent_creep", "title": "Subscription creep", "extra_per_month": 4500.0, "extra_per_year": 54000.0, "severity": "High", "evidence": ["t_201", "t_340"], "tag": "observed"}],
+  "priority_list": [{"id": "t_001", "date": "2026-09-03", "narration": "UPI/ZOMATO", "amount": 420.0, "type": "debit", "category": "food_delivery", "category_confidence": 0.91, "priority": "Low", "balance": 18250.0}],
+  "payment_order": ["rent", "emi_1", "utilities"],
+  "min_days": null
+}

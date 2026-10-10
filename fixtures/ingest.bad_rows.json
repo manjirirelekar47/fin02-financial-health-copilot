@@ -1,0 +1,5 @@
+{
+  "accepted": [{"id": "t_001", "date": "2026-09-03", "narration": "UPI/ZOMATO", "amount": 420.0, "type": "debit", "category": "food_delivery", "category_confidence": 0.91, "priority": "Low", "balance": 18250.0}],
+  "rejected": [{"row": 3, "reasons": ["amount must be a positive number"]}],
+  "preview": [{"id": "t_001", "date": "2026-09-03", "narration": "UPI/ZOMATO", "amount": 420.0, "type": "debit", "category": "food_delivery", "category_confidence": 0.91, "priority": "Low", "balance": 18250.0}]
+}

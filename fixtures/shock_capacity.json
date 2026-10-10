@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "limit": 0.1,
+  "largest_absorbable_shock": 12000.0,
+  "tag": "predicted",
+  "evidence": ["buffer:p10", "risk_limit:0.10"]
+}
