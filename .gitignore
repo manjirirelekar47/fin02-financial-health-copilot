@@ -1,15 +1,10 @@
-__pycache__/
+﻿__pycache__/
 *.pyc
 node_modules/
-.env
-.env.*
-!.env.example
+frontend/node_modules/
 venv/
 .venv/
 dist/
 build/
 .vite/
-.vercel/
-*.zip
 *.log
-.DS_Store
