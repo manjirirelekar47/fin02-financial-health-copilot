@@ -67,7 +67,9 @@ export default function Dashboard({ onNavigate = null }) {
     let isMounted = true;
     setIsLoading(true);
 
-    fetch(`/api/dashboard?horizon=${encodeURIComponent(timeHorizon)}&lang=${encodeURIComponent(currentLanguage)}`, {
+    const BASE_URL = import.meta.env.VITE_API_URL || "https://spendshield-tj9v.onrender.com";
+
+fetch(`${BASE_URL}/api/dashboard?horizon=${encodeURIComponent(timeHorizon)}&lang=${encodeURIComponent(currentLanguage)}`, {
       headers: {
         Accept: "application/json",
         "Accept-Language": currentLanguage,
