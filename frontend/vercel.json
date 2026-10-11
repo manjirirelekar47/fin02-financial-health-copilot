@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://spendshield-tj9v.onrender.com/api/:path*"
+    },
+    {
+      "source": "/simulate/:path*",
+      "destination": "https://spendshield-tj9v.onrender.com/simulate/:path*"
+    },
+    {
+      "source": "/twin/:path*",
+      "destination": "https://spendshield-tj9v.onrender.com/twin/:path*"
+    },
+    {
+      "source": "/transactions/:path*",
+      "destination": "https://spendshield-tj9v.onrender.com/transactions/:path*"
+    }
+  ]
+}
