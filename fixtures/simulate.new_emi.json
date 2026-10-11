@@ -1,0 +1,9 @@
+{
+  "status": "ok",
+  "shortfall_prob": 0.18,
+  "buffer": {"p10": 4200.0, "p50": 16800.0, "p90": 31000.0},
+  "runway_days": 74,
+  "new_dti": 0.34,
+  "tag": "predicted",
+  "evidence": ["recurring:rent", "recurring:emi_1"]
+}

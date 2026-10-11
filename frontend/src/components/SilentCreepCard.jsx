@@ -1,49 +1,69 @@
-// frontend/SilentCreepCard.jsx — Displays Silent Creep subscription drift alerts.
+// src/components/SilentCreepCard.jsx — Summary metric card for Silent Creep Tracker
 import React from "react";
-import { TrendingUp, AlertTriangle } from "lucide-react";
+import { AlertTriangle, TrendingUp } from "lucide-react";
+import { useSettings } from "../context/SettingsContext";
 
-export default function SilentCreepCard({ alerts = [] }) {
-  const creepAlerts = alerts.filter((a) => a.mode === "silent_creep");
-  if (creepAlerts.length === 0) return null;
+export default function SilentCreepCard({
+  totalMonthlyCreep = 3200,
+  annualCreep = null,
+  creepingItemsCount = 2,
+  alerts = [],
+  className = "",
+}) {
+  const { t } = useSettings();
+  const creepAlert = alerts.find((a) => a.mode === "silent_creep");
+  const monthlyAmount = creepAlert?.extra_per_month ?? totalMonthlyCreep;
+  const annualAmount = annualCreep ?? creepAlert?.extra_per_year ?? (monthlyAmount * 12);
 
   return (
-    <div className="space-y-3">
-      {creepAlerts.map((alert) => (
-        <div
-          key={alert.id}
-          className="rounded-xl border border-amber-200 bg-amber-50/90 p-4 flex items-start gap-3 shadow-sm"
-        >
-          <div className="p-2 rounded-lg bg-amber-100 text-amber-700 shrink-0 mt-0.5">
-            <TrendingUp size={18} />
+    <div
+      className={`rounded-3xl p-6 bg-gradient-to-br from-rose-500/10 via-red-500/5 to-amber-500/5 dark:from-rose-950/30 dark:via-red-950/20 dark:to-zinc-900 border border-rose-200 dark:border-rose-900/40 shadow-sm transition-all ${className}`}
+    >
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Left: Metric highlights */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200 border border-rose-200 dark:border-rose-800/60 inline-flex items-center gap-1.5">
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+              <span>{t("Silent Creep")}</span>
+            </span>
+            <span className="text-xs text-rose-600 dark:text-rose-400 font-semibold">
+              {creepingItemsCount} {t("Creep Alerts")}
+            </span>
           </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-bold text-amber-900">{alert.title}</p>
-              <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 bg-amber-200 text-amber-900 rounded">
-                Silent Creep
+
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white flex items-baseline gap-2">
+              <span>{t("Total Monthly Creep")}:</span>
+              <span className="text-rose-600 dark:text-rose-400">
+                +₹{Number(monthlyAmount).toLocaleString("en-IN")}
               </span>
-            </div>
-            <p className="text-xs text-amber-800 font-semibold mt-1">
-              +₹{Number(alert.extra_per_month || 0).toLocaleString()}/month{" "}
-              <span className="font-normal text-amber-700">
-                (+₹{Number(alert.extra_per_year || 0).toLocaleString()}/year)
-              </span>
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-zinc-400 mt-1">
+              {t("Total Monthly Burden")}:{" "}
+              <strong className="text-slate-900 dark:text-white font-bold">
+                +₹{Number(annualAmount).toLocaleString("en-IN")}/year
+              </strong>{" "}
+              {t("from your safe liquidity buffer.") || "from your safe liquidity buffer."}
             </p>
-            {alert.evidence && alert.evidence.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {alert.evidence.map((ev, i) => (
-                  <span
-                    key={i}
-                    className="text-[10px] bg-white/90 text-slate-600 px-2 py-0.5 rounded border border-amber-200 font-mono"
-                  >
-                    {ev}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         </div>
-      ))}
+
+        {/* Right: Quick Telemetry Tag */}
+        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-rose-100 dark:border-rose-900/30">
+          <div className="text-right">
+            <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-zinc-500 tracking-wider block">
+              {t("Total Monthly Burden")}
+            </span>
+            <span className="text-lg font-black text-rose-600 dark:text-rose-400">
+              ₹{Number(annualAmount).toLocaleString("en-IN")}
+            </span>
+          </div>
+          <span className="text-[11px] font-semibold text-rose-700 dark:text-rose-300 bg-rose-100/80 dark:bg-rose-900/40 px-2.5 py-1 rounded-full inline-flex items-center gap-1">
+            <TrendingUp className="w-3 h-3" /> {t("Action")}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

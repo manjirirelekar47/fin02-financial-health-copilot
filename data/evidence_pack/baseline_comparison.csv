@@ -1,0 +1,17 @@
+persona,stream,baseline_name,mae,mase,coverage_80,mean_width,origins,grade
+persona_a,expenses,Historical Average,12799.83,0.814,0.951,72057.5,23,Decision-grade
+persona_a,expenses,Recurring-Payment-Only,12219.27,0.777,0.967,70814.17,23,Decision-grade
+persona_a,expenses,Moving Average,12894.48,0.82,0.946,71980.95,23,Decision-grade
+persona_a,expenses,Linear Regression (Selected),12847.92,0.817,0.962,72321.19,23,Decision-grade
+persona_a,income,Historical Average,27228.26,0.852,0.891,134745.75,23,Decision-grade
+persona_a,income,Recurring-Payment-Only,17760.87,0.556,0.967,117259.26,23,Decision-grade
+persona_a,income,Moving Average (Selected),27445.65,0.859,0.897,135159.07,23,Decision-grade
+persona_a,income,Linear Regression,26940.03,0.843,0.897,134368.6,23,Decision-grade
+persona_b,expenses,Historical Average,5403.6,0.629,0.984,30654.09,23,Decision-grade
+persona_b,expenses,Recurring-Payment-Only,5602.07,0.652,0.946,32685.28,23,Decision-grade
+persona_b,expenses,Moving Average (Selected),5451.14,0.635,0.973,30536.18,23,Decision-grade
+persona_b,expenses,Linear Regression,5285.21,0.616,0.989,30500.41,23,Decision-grade
+persona_b,income,Historical Average,13848.03,0.892,0.848,39093.28,23,Decision-grade
+persona_b,income,Recurring-Payment-Only,13705.89,0.883,0.777,26837.88,23,Decision-grade
+persona_b,income,Moving Average (Selected),15506.76,0.999,0.81,39572.89,23,Decision-grade
+persona_b,income,Linear Regression,13557.47,0.873,0.875,36056.64,23,Decision-grade

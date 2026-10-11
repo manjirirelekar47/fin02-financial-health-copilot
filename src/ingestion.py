@@ -44,13 +44,15 @@ def load_transactions(path: str) -> pd.DataFrame:
     except pd.errors.EmptyDataError as exc:
         raise TransactionValidationError(f"File is empty: {path}") from exc
 
+    df = df.copy()
+    if "merchant" not in df.columns and "narration" in df.columns:
+        df["merchant"] = df["narration"]
+
     missing = [c for c in REQUIRED_COLUMNS if c not in df.columns]
     if missing:
         raise TransactionValidationError(
             f"Missing required column(s): {missing}. Found columns: {list(df.columns)}"
         )
-
-    df = df.copy()
 
     # --- Normalise merchant strings ---
     df["merchant"] = df["merchant"].astype(str).str.strip().str.upper()

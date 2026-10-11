@@ -1,0 +1,57 @@
+{
+  "lp_solver": "scipy.optimize.linprog(method='highs')",
+  "horizon_periods": {
+    "weekly": 8,
+    "monthly": 6,
+    "yearly": 12
+  },
+  "priority_rules": {
+    "Critical": {
+      "categories": [
+        "debt_payment",
+        "EMI",
+        "loan"
+      ],
+      "policy": "Non-negotiable. Fixed 100%. Never cut under any plan or replan."
+    },
+    "High": {
+      "categories": [
+        "housing",
+        "utilities",
+        "health"
+      ],
+      "policy": "Essential. Fixed. Protected against discretionary trimming."
+    },
+    "Medium": {
+      "categories": [
+        "groceries",
+        "transport",
+        "fuel"
+      ],
+      "policy": "Semi-flexible. Max cut 30%. Objective penalty weight: 3.0 (cut second)."
+    },
+    "Low": {
+      "categories": [
+        "subscriptions",
+        "food_delivery",
+        "shopping",
+        "entertainment",
+        "travel"
+      ],
+      "policy": "Discretionary. Max cut 75%. Objective penalty weight: 1.0 (cut first)."
+    }
+  },
+  "decision_variables": {
+    "x_low": "Planned discretionary spend [0.25 * forecast, 1.0 * forecast]",
+    "x_med": "Planned medium spend [0.70 * forecast, 1.0 * forecast]",
+    "p": "Optional debt prepayment [0, 25,000]",
+    "s": "Ringfenced goal savings [0, 50,000]",
+    "r_t": "Reserve floor slack variable [0, inf)",
+    "g": "Savings goal slack variable [0, inf)"
+  },
+  "objective_function": "Minimise: -1.0 * sum(x_low) - 3.0 * sum(x_med) + 10,000 * sum(r_t) + 10,000 * g",
+  "infeasibility_thresholds": {
+    "slack_limit": "Infeasible when any r_t > Rs 1.0 or g > Rs 1.0 after max allowed cuts",
+    "risk_limit": "Infeasible when reserve-breach probability > locked max_risk (default 15%)"
+  }
+}

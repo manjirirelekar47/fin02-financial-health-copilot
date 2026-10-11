@@ -1,0 +1,9 @@
+metric,value,unit,year,report_name,source_url
+Out-of-pocket (OOP) health spending,39.4,percentage,2021-22,National Health Accounts,https://pib.gov.in/PressReleasePage.aspx?PRID=2058564
+Target OOP health spending,35.0,percentage,2021-22,National Health Accounts,https://pib.gov.in/PressReleasePage.aspx?PRID=2058564
+Total health expenditure,3.83,percentage_gdp,2021-22,National Health Accounts,https://pib.gov.in/PressReleasePage.aspx?PRID=2058564
+Government share of health expenditure,48.0,percentage,2021-22,National Health Accounts,https://pib.gov.in/PressReleasePage.aspx?PRID=2058564
+Household debt,45.5,percentage_gdp,2023,RBI Financial Stability Report,https://rbi.org.in/Scripts/AnnualReportPublications.aspx
+Non-housing retail loans share,58.4,percentage,2023,RBI Financial Stability Report,https://rbi.org.in/Scripts/AnnualReportPublications.aspx
+Debt service ratio,12.0,percentage_income,2023,RBI Financial Stability Report,https://rbi.org.in/Scripts/AnnualReportPublications.aspx
+Savings buffer (Months of expenses),3.0,months,2023,RBI Financial Stability Report,https://rbi.org.in/Scripts/AnnualReportPublications.aspx

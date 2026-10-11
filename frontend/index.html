@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0E2E28" />
+    <meta name="theme-color" content="#0a3622" />
     <title>SpendShield — Financial Health Copilot</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -14,13 +14,11 @@
       rel="stylesheet"
     />
     <!-- Tailwind via CDN, with the SpendShield design tokens extended inline.
-         THEME NOTE: the token NAMES below (navy, accent, canvas, cardborder)
-         are unchanged so every existing component keeps working untouched —
-         only their VALUES moved from blue to the logo's green palette.
-         "navy" now holds the logo's deep green; it is the brand dark colour. -->
+         THEME NOTE: deep dark green brand palette (#0a3622 or emerald-900). -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
@@ -28,38 +26,27 @@
               display: ["Inter", "sans-serif"],
             },
             colors: {
-              canvas: "#EEF7F2",
-              navy: "#0E2E28",
-              cardborder: "#D5E8DD",
-              accent: "#0D9488",
-              healthy: "#16A34A",
-              attention: "#D97706",
-              risk: "#DC2626",
+              canvas: "#F4F5F7",
+              navy: "#0a3622",
+              forest: "#0a3622",
+              cardborder: "#E5E7EB",
+              accent: "#10B981",
+              healthy: "#10B981",
+              attention: "#F59E0B",
+              risk: "#EF4444",
             },
           },
         },
       };
     </script>
     <style>
-      /* Page background: soft green gradient with two light "glow" blobs.
-         Fixed so the glass cards blur over the same backdrop while scrolling. */
-      .app-bg {
-        background:
-          radial-gradient(1100px 560px at 88% -8%, rgba(52, 211, 153, 0.24), transparent 60%),
-          radial-gradient(900px 520px at -8% 108%, rgba(16, 185, 129, 0.18), transparent 58%),
-          linear-gradient(135deg, #f3faf6 0%, #e8f5ee 52%, #dcf0e5 100%);
-        background-attachment: fixed;
+      /* Smooth transitions for theme toggle */
+      html.dark {
+        color-scheme: dark;
       }
-
-      /* Glassmorphism for every card in the main content area. Components
-         use plain `bg-white` cards; this restyles them in one place instead
-         of editing each teammate's file. */
-      main .bg-white {
-        background-color: rgba(255, 255, 255, 0.72);
-        -webkit-backdrop-filter: blur(12px);
-        backdrop-filter: blur(12px);
-        border-color: rgba(255, 255, 255, 0.7);
-        box-shadow: 0 8px 28px -12px rgba(14, 46, 40, 0.18);
+      body {
+        margin: 0;
+        padding: 0;
       }
 
       /* Motion: content cascades in on load and on every tab switch (React's
@@ -89,9 +76,17 @@
       *::-webkit-scrollbar { width: 8px; height: 8px; }
       *::-webkit-scrollbar-thumb { background: rgba(29, 96, 76, 0.35); border-radius: 999px; }
       *::-webkit-scrollbar-track { background: transparent; }
+      .no-scrollbar::-webkit-scrollbar, .scrollbar-none::-webkit-scrollbar { display: none; }
+      .no-scrollbar, .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+      /* Ultra-thin elegant scrollbar */
+      .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.25); border-radius: 9999px; }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.5); }
+      .custom-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(16, 185, 129, 0.25) transparent; }
     </style>
   </head>
-  <body class="bg-canvas">
+  <body class="bg-[#F2F9F6] dark:bg-[#061d12] text-[#18191B] dark:text-zinc-100 transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

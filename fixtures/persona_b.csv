@@ -1,0 +1,23 @@
+date,narration,amount,type
+2026-07-01,Client invoice - Studio North,85000.00,credit
+2026-07-02,Office rent,18000.00,debit
+2026-07-03,Internet and mobile,1499.00,debit
+2026-07-06,Grocery market,3240.50,debit
+2026-07-10,Freelance design deposit,22000.00,credit
+2026-07-12,Software subscriptions,2899.00,debit
+2026-07-15,Electricity bill,1850.00,debit
+2026-07-18,Petrol,2100.00,debit
+2026-08-01,Client invoice - Studio North,90000.00,credit
+2026-08-02,Office rent,18000.00,debit
+2026-08-05,Contractor payment,12500.00,debit
+2026-08-08,Grocery market,3610.00,debit
+2026-08-14,Freelance workshop fee,7500.00,credit
+2026-08-18,Software subscriptions,2899.00,debit
+2026-08-22,Health insurance,4200.00,debit
+2026-09-01,Client invoice - Studio North,78000.00,credit
+2026-09-02,Office rent,18000.00,debit
+2026-09-04,Contractor payment,16200.00,debit
+2026-09-09,Grocery market,3405.00,debit
+2026-09-15,Freelance consulting,18000.00,credit
+2026-09-18,Software subscriptions,2899.00,debit
+2026-09-24,Equipment repair,6800.00,debit

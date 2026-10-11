@@ -1,0 +1,212 @@
+{
+  "id": "plan_infeasible_goal",
+  "reserve": 50000.0,
+  "goal": 300000.0,
+  "deadline": "2026-11-30",
+  "horizon_weeks": 8,
+  "status": "infeasible",
+  "recommended_sequence_id": "",
+  "why_line": "Target is infeasible: ₹300,000 savings goal cannot coexist with ₹50,000 reserve floor and mandatory debt obligations over 8 weeks.",
+  "view": "weekly",
+  "grade": "Decision-grade",
+  "conflict": {
+    "constraints": [
+      "closing_balance + reserve_slack >= 50000 (Reserve Floor)",
+      "cumulative_savings + goal_slack >= 300000 (Savings Goal)",
+      "debt_service >= 35000 (Non-negotiable EMIs)"
+    ],
+    "slack_amounts": {
+      "savings_goal_shortfall": 142500.0,
+      "reserve_deficit": 18200.0
+    },
+    "relaxations": [
+      {
+        "type": "lower_goal",
+        "amount": 157500.0,
+        "resulting_risk": 0.065,
+        "description": "Lower the savings goal to ₹157,500 to keep the reserve floor protected at 6.5% risk."
+      },
+      {
+        "type": "extend_deadline",
+        "weeks": 16,
+        "resulting_risk": 0.082,
+        "description": "Extend savings deadline from 8 to 16 weeks to accumulate ₹300,000 without breaching reserve."
+      },
+      {
+        "type": "lower_reserve",
+        "amount": 30000.0,
+        "resulting_risk": 0.245,
+        "description": "Temporarily lower minimum reserve from ₹50,000 to ₹30,000 (warning: raises shortfall risk to 24.5%)."
+      }
+    ],
+    "tag": "observed"
+  },
+  "sequences": [
+    {
+      "id": "seq_s0_hold_steady",
+      "name": "S0 Hold steady (do-nothing baseline)",
+      "tag": "predicted",
+      "actions": [],
+      "summary": {
+        "min_p10_closing": 31800.0,
+        "any_week_breach_prob": 0.385,
+        "total_cut": 0.0,
+        "goal_met": false
+      },
+      "periods": [
+        {
+          "week": 1,
+          "start_date": "2026-10-05",
+          "opening_balance": 52000.0,
+          "income_p50": 28000.0,
+          "essentials": 11500.0,
+          "debt_service": 8200.0,
+          "discretionary": 5400.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 48200.0,
+          "closing_p50": 54900.0,
+          "closing_p90": 61200.0,
+          "reserve_breach_prob": 0.12,
+          "tradeoff_note": "No changes applied; reserve holds in week 1.",
+          "period_type": "week",
+          "period_label": "Week 1",
+          "grade": "Decision-grade"
+        },
+        {
+          "week": 2,
+          "start_date": "2026-10-12",
+          "opening_balance": 54900.0,
+          "income_p50": 0.0,
+          "essentials": 6100.0,
+          "debt_service": 0.0,
+          "discretionary": 4800.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 39800.0,
+          "closing_p50": 44000.0,
+          "closing_p90": 49100.0,
+          "reserve_breach_prob": 0.28,
+          "tradeoff_note": "Reserve breach: balance ₹44,000 drops below ₹50,000 reserve.",
+          "period_type": "week",
+          "period_label": "Week 2",
+          "grade": "Decision-grade"
+        },
+        {
+          "week": 3,
+          "start_date": "2026-10-19",
+          "opening_balance": 44000.0,
+          "income_p50": 0.0,
+          "essentials": 5800.0,
+          "debt_service": 0.0,
+          "discretionary": 4200.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 31800.0,
+          "closing_p50": 34000.0,
+          "closing_p90": 38200.0,
+          "reserve_breach_prob": 0.385,
+          "tradeoff_note": "Severe reserve breach: P10 reaches ₹31,800.",
+          "period_type": "week",
+          "period_label": "Week 3",
+          "grade": "Decision-grade"
+        },
+        {
+          "week": 4,
+          "start_date": "2026-10-26",
+          "opening_balance": 34000.0,
+          "income_p50": 0.0,
+          "essentials": 5200.0,
+          "debt_service": 0.0,
+          "discretionary": 4100.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 32100.0,
+          "closing_p50": 34700.0,
+          "closing_p90": 37900.0,
+          "reserve_breach_prob": 0.37,
+          "tradeoff_note": "Pre-payday floor.",
+          "period_type": "week",
+          "period_label": "Week 4",
+          "grade": "Decision-grade"
+        },
+        {
+          "week": 5,
+          "start_date": "2026-11-02",
+          "opening_balance": 34700.0,
+          "income_p50": 32000.0,
+          "essentials": 12500.0,
+          "debt_service": 8200.0,
+          "discretionary": 5100.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 36800.0,
+          "closing_p50": 40900.0,
+          "closing_p90": 46500.0,
+          "reserve_breach_prob": 0.31,
+          "tradeoff_note": "Payday inflow insufficient to recover reserve.",
+          "period_type": "week",
+          "period_label": "Week 5",
+          "grade": "Decision-grade"
+        },
+        {
+          "week": 6,
+          "start_date": "2026-11-09",
+          "opening_balance": 40900.0,
+          "income_p50": 0.0,
+          "essentials": 5900.0,
+          "debt_service": 0.0,
+          "discretionary": 4300.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 34200.0,
+          "closing_p50": 38700.0,
+          "closing_p90": 43100.0,
+          "reserve_breach_prob": 0.34,
+          "tradeoff_note": "Outflows continue without savings allocation.",
+          "period_type": "week",
+          "period_label": "Week 6",
+          "grade": "Decision-grade"
+        },
+        {
+          "week": 7,
+          "start_date": "2026-11-16",
+          "opening_balance": 38700.0,
+          "income_p50": 0.0,
+          "essentials": 5800.0,
+          "debt_service": 0.0,
+          "discretionary": 4200.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 33100.0,
+          "closing_p50": 36700.0,
+          "closing_p90": 41200.0,
+          "reserve_breach_prob": 0.36,
+          "tradeoff_note": "Persistent deficit against reserve.",
+          "period_type": "week",
+          "period_label": "Week 7",
+          "grade": "Decision-grade"
+        },
+        {
+          "week": 8,
+          "start_date": "2026-11-23",
+          "opening_balance": 36700.0,
+          "income_p50": 0.0,
+          "essentials": 6000.0,
+          "debt_service": 0.0,
+          "discretionary": 4400.0,
+          "savings": 0.0,
+          "prepayment": 0.0,
+          "closing_p10": 32000.0,
+          "closing_p50": 35300.0,
+          "closing_p90": 39800.0,
+          "reserve_breach_prob": 0.38,
+          "tradeoff_note": "End of 8 weeks: savings ₹0 / ₹300,000 goal, reserve breached.",
+          "period_type": "week",
+          "period_label": "Week 8",
+          "grade": "Decision-grade"
+        }
+      ]
+    }
+  ]
+}
