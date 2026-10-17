@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Login from "./Login.jsx";
+import { supabase } from "./lib/supabase";
 import Onboarding from "./Onboarding.jsx";
 import Subscriptions from "./pages/Subscriptions.jsx";
 import Scenarios from "./pages/Scenarios.jsx";
@@ -4332,8 +4333,11 @@ export default function App() {
               </div>
 
               <button
-                onClick={() => {
+                onClick={async () => {
+                  await supabase?.auth.signOut();
                   localStorage.removeItem("token");
+                  localStorage.removeItem("user_email");
+                  localStorage.removeItem("spendshield-session-id");
                   navigate("/login");
                 }}
                 title="Sign Out / Go to Login Screen"

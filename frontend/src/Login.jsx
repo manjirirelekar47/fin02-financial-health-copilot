@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import LanguageSelector from "./components/LanguageSelector";
 import VoiceCommand from "./components/VoiceCommand";
 import { useSettings } from "./context/SettingsContext";
+import { isSupabaseConfigured, supabase } from "./lib/supabase";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -69,70 +70,81 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [authMode, setAuthMode] = useState("sign_in");
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) return;
+
+    const restoreSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        persistSession(session, session.user);
+        navigate("/onboarding", { replace: true });
+      }
+    };
+
+    restoreSession();
+  }, [navigate]);
 
   // ---------------------------------------------------------------------------
   // API INTEGRATION & AUTHENTICATION HANDLING
   // ---------------------------------------------------------------------------
+  const persistSession = (session, user) => {
+    localStorage.setItem("token", session.access_token);
+    localStorage.setItem("user_email", user.email || "");
+    // The existing API uses this value to scope persisted user data. Supabase
+    // user IDs are stable, unlike the previous generated demo session IDs.
+    localStorage.setItem("spendshield-session-id", user.id);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setNotice("");
     setIsLoading(true);
 
-    let response = null;
-    let data = null;
-
     try {
-      const backendUrl =
-        import.meta.env.VITE_API_AUTH_URL ||
-        "/api/login";
+      if (!isSupabaseConfigured || !supabase) {
+        throw new Error(
+          "Authentication is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to the frontend environment.",
+        );
+      }
 
-      const sep = backendUrl.includes("?") ? "&" : "?";
-      const loginUrl = `${backendUrl}${sep}lang=${encodeURIComponent(currentLanguage || "en")}`;
-
-      try {
-        response = await fetch(loginUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept-Language": currentLanguage || "en",
+      const trimmedEmail = email.trim();
+      if (authMode === "sign_up") {
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email: trimmedEmail,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/login`,
           },
-          body: JSON.stringify({
-            email: email.trim(),
-            password: password,
-          }),
         });
 
-        data = await response.json().catch(() => null);
-      } catch (fetchErr) {
-        // Fallback simulation for local dev or offline port testing
-        if (email.trim() && password.length >= 4) {
-          data = {
-            token: `jwt_spendshield_${btoa(email.trim())}_${Date.now()}`,
-            user: { email: email.trim() },
-          };
-          response = { ok: true };
-        } else {
-          throw new Error("Unable to connect to auth server. Please check your network.");
+        if (signUpError) throw signUpError;
+
+        if (!data.session || !data.user) {
+          setNotice("Account created. Check your email to confirm your address, then sign in.");
+          return;
         }
+
+        persistSession(data.session, data.user);
+        navigate("/onboarding");
+        return;
       }
 
-      if (!response || !response.ok) {
-        const errorMsg =
-          (data && (data.detail || data.message || data.error)) ||
-          "Authentication failed. Please verify your email and password.";
-        throw new Error(errorMsg);
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password,
+      });
+
+      if (signInError) throw signInError;
+      if (!data.session || !data.user) {
+        throw new Error("Supabase did not return a user session.");
       }
 
-      const token = data?.token || `jwt_spendshield_session_${Date.now()}`;
-
-      // Store JWT token in localStorage
-      localStorage.setItem("token", token);
-      if (data?.user?.email) {
-        localStorage.setItem("user_email", data.user.email);
-      }
-
-      // Redirect user to the new data import step
+      persistSession(data.session, data.user);
       navigate("/onboarding");
     } catch (err) {
       setError(err.message || "An unexpected error occurred. Please try again.");
@@ -141,7 +153,48 @@ export default function Login() {
     }
   };
 
-  // Demo account autofill helper
+  const handlePasswordReset = async () => {
+    setError("");
+    setNotice("");
+
+    try {
+      if (!isSupabaseConfigured || !supabase) {
+        throw new Error("Authentication is not configured yet.");
+      }
+      if (!email.trim()) {
+        throw new Error("Enter your email address first.");
+      }
+
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email.trim(),
+        { redirectTo: `${window.location.origin}/login` },
+      );
+      if (resetError) throw resetError;
+      setNotice("If an account exists for this email, a password-reset link has been sent.");
+    } catch (err) {
+      setError(err.message || "Unable to send the password-reset email.");
+    }
+  };
+
+  const handleOAuth = async (provider) => {
+    setError("");
+    setNotice("");
+    try {
+      if (!isSupabaseConfigured || !supabase) {
+        throw new Error("Authentication is not configured yet.");
+      }
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: { redirectTo: `${window.location.origin}/login` },
+      });
+      if (oauthError) throw oauthError;
+    } catch (err) {
+      setError(err.message || "Unable to start social sign-in.");
+    }
+  };
+
+  // Demo account autofill helper. It only fills the fields; authentication
+  // is always performed by Supabase.
   const handleDemoFill = () => {
     setEmail("manjiri@spendshield.ai");
     setPassword("Autoshield@2026");
@@ -525,8 +578,8 @@ export default function Login() {
             {/* Google SSO Button */}
             <button
               type="button"
-              onClick={handleDemoFill}
-              title="Click to auto-populate demo credentials"
+              onClick={() => handleOAuth("google")}
+              title="Continue with Google"
               className="py-3 px-4 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-slate-200 dark:border-white/10 hover:border-emerald-500/40 dark:hover:border-emerald-500/30 text-slate-800 dark:text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all duration-200 active:scale-[0.98] shadow-xs hover:shadow-sm cursor-pointer group"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -553,8 +606,8 @@ export default function Login() {
             {/* Apple SSO Button */}
             <button
               type="button"
-              onClick={handleDemoFill}
-              title="Click to auto-populate demo credentials"
+              onClick={() => handleOAuth("apple")}
+              title="Continue with Apple"
               className="py-3 px-4 rounded-2xl bg-white dark:bg-[#1c1c1c] border border-slate-200 dark:border-white/10 hover:border-emerald-500/40 dark:hover:border-emerald-500/30 text-slate-800 dark:text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all duration-200 active:scale-[0.98] shadow-xs hover:shadow-sm cursor-pointer group"
             >
               <svg className="w-4 h-4 fill-current shrink-0 text-slate-900 dark:text-white" viewBox="0 0 24 24">
@@ -613,7 +666,7 @@ export default function Login() {
                   href="#forgot"
                   onClick={(e) => {
                     e.preventDefault();
-                    setError("Password reset instruction sent to your registered email.");
+                    handlePasswordReset();
                   }}
                   className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium transition-colors"
                 >
@@ -661,6 +714,17 @@ export default function Login() {
               </motion.div>
             )}
 
+            {notice && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs flex items-start gap-2 text-left"
+              >
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{notice}</span>
+              </motion.div>
+            )}
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -670,11 +734,11 @@ export default function Login() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  <span>{t("Signing in...")}</span>
+                  <span>{authMode === "sign_up" ? "Creating account..." : t("Signing in...")}</span>
                 </>
               ) : (
                 <>
-                  <span>{t("sign_in")}</span>
+                  <span>{authMode === "sign_up" ? "Create account" : t("sign_in")}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -683,30 +747,24 @@ export default function Login() {
 
           {/* Bottom Links: "No account? Sign up" */}
           <div className="pt-2 text-center text-xs text-slate-600 dark:text-zinc-400 w-full">
-            <span>{t("No account? ")}</span>
+            <span>{authMode === "sign_up" ? "Already have an account? " : t("No account? ")}</span>
             <a
               href="#signup"
               onClick={(e) => {
                 e.preventDefault();
-                handleDemoFill();
+                setAuthMode((mode) => mode === "sign_up" ? "sign_in" : "sign_up");
+                setError("");
+                setNotice("");
               }}
               className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-semibold transition-colors"
             >
-              {t("Sign up")}
+              {authMode === "sign_up" ? t("sign_in") : t("Sign up")}
             </a>
-            <span className="mx-2 text-slate-400 dark:text-zinc-600">•</span>
-            <button
-              type="button"
-              onClick={() => navigate("/onboarding")}
-              className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-semibold hover:underline transition-colors cursor-pointer"
-            >
-              Data Onboarding
-            </button>
           </div>
 
           {/* Quick Demo Credentials Pill for Reviewers */}
           <div className="pt-4 border-t border-slate-200 dark:border-zinc-800/60 flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-500 w-full">
-            <span>Demo: manjiri@spendshield.ai</span>
+            <span>Use an account created in Supabase</span>
             <button
               type="button"
               onClick={handleDemoFill}
