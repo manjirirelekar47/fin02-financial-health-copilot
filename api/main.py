@@ -77,38 +77,6 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "persona_a_tra
 FIXTURES_PATH = os.path.join(os.path.dirname(__file__), "..", "fixtures")
 
 
-@app.post("/api/login")
-async def login_api(request: Request):
-    """
-    POST /api/login — Authenticates user credentials and issues deterministic session JWT token.
-    """
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-
-    email = str(body.get("email", "")).strip()
-    password = str(body.get("password", "")).strip()
-
-    if not email or not password:
-        raise HTTPException(status_code=400, detail="Email and password are required.")
-
-    token_entropy = uuid.uuid4().hex
-    jwt_token = f"jwt_spendshield_{token_entropy[:16]}"
-
-    return {
-        "status": "success",
-        "token": jwt_token,
-        "user": {
-            "email": email,
-            "name": "Manjiri Relekar",
-            "tier": "Enterprise Autoshield",
-            "account_id": "HDFC-••9012"
-        },
-        "message": "Authentication successful"
-    }
-
-
 @app.post("/api/voice")
 @app.post("/api/command")
 async def voice_command_endpoint(
