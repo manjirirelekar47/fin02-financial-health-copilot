@@ -15,7 +15,10 @@
     {
       "source": "/transactions/:path*",
       "destination": "https://spendshield-tj9v.onrender.com/transactions/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
-
