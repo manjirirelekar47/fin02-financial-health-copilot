@@ -11,6 +11,7 @@ import {
   EyeOff,
   CreditCard,
   AlertCircle,
+  CheckCircle2,
   Loader2,
   TrendingUp,
 } from "lucide-react";
